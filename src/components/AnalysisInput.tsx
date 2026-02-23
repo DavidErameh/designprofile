@@ -129,7 +129,7 @@ export default function AnalysisInput() {
       <div className="relative flex items-center p-1 rounded-lg bg-[#394739]/5 border border-[#394739]/10">
         {/* Sliding Indicator */}
         <div
-          className="absolute top-1 bottom-1 rounded-md bg-white shadow-sm transition-all duration-300 ease-out"
+          className="absolute top-1 bottom-1 rounded-md bg-[#aff6b0] shadow-sm transition-all duration-300 ease-out"
           style={{
             left: mode === "web" ? "4px" : "50%",
             width: "calc(50% - 4px)",

@@ -26,8 +26,8 @@ export default function Nav() {
             </button>
           </SignInButton>
           <SignUpButton forceRedirectUrl="/">
-            <button className="bg-[#aff6b0] text-[#394739] px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
-              Get started
+            <button className="bg-[#aff6b0] text-[#394739] px-6 py-2 rounded-lg font-bold text-[15px] hover:opacity-90 transition-opacity">
+              Join
             </button>
           </SignUpButton>
         </SignedOut>
