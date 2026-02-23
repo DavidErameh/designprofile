@@ -6,7 +6,7 @@ import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, ImageIcon, Upload, X, ArrowRight, Loader2 } from "lucide-react";
+import { Monitor, ImageIcon, Upload, X, ArrowRight, Loader2 } from "lucide-react";
 
 type Mode = "web" | "image";
 
@@ -126,10 +126,10 @@ export default function AnalysisInput() {
   return (
     <div className="w-full max-w-[640px] mx-auto flex flex-col items-center gap-5">
       {/* ── Toggle Bar ─────────────────────────────────────────────── */}
-      <div className="relative flex items-center p-1 rounded-full bg-[#394739]/5 border border-[#394739]/10">
+      <div className="relative flex items-center p-1 rounded-lg bg-[#394739]/5 border border-[#394739]/10">
         {/* Sliding Indicator */}
         <div
-          className="absolute top-1 bottom-1 rounded-full bg-white shadow-sm transition-all duration-300 ease-out"
+          className="absolute top-1 bottom-1 rounded-md bg-white shadow-sm transition-all duration-300 ease-out"
           style={{
             left: mode === "web" ? "4px" : "50%",
             width: "calc(50% - 4px)",
@@ -137,16 +137,16 @@ export default function AnalysisInput() {
         />
         <button
           onClick={() => switchMode("web")}
-          className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors duration-200 ${
+          className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-md transition-colors duration-200 ${
             mode === "web" ? "text-[var(--fg)]" : "text-[#394739]/50 hover:text-[#394739]"
           }`}
         >
-          <Globe className="w-3.5 h-3.5" />
+          <Monitor className="w-3.5 h-3.5" />
           Web
         </button>
         <button
           onClick={() => switchMode("image")}
-          className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors duration-200 ${
+          className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-md transition-colors duration-200 ${
             mode === "image" ? "text-[var(--fg)]" : "text-[#394739]/50 hover:text-[#394739]"
           }`}
         >
@@ -181,12 +181,12 @@ export default function AnalysisInput() {
                   onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                   placeholder="Paste any website URL..."
                   disabled={loading}
-                  className="w-full pl-5 pr-14 py-4 rounded-xl border border-[#394739]/10 bg-[var(--bg)] text-[var(--fg)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--fg)]/20 transition-all placeholder:text-[#394739]/40"
+                  className="w-full pl-5 pr-14 py-4 rounded-lg border border-[#394739]/10 bg-[var(--bg)] text-[var(--fg)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--fg)]/20 transition-all placeholder:text-[#394739]/40"
                 />
                 <button
                   type="submit"
                   disabled={loading || !url.trim()}
-                  className="absolute right-3 p-2 rounded-lg bg-[var(--fg)] text-[var(--bg)] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center"
+                  className="absolute right-2 p-2 rounded-md bg-[#aff6b0] text-[#394739] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center h-10 w-10"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -227,7 +227,7 @@ export default function AnalysisInput() {
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onClick={() => fileInputRef.current?.click()}
-                  className={`relative flex flex-col items-center justify-center gap-3 min-h-[160px] rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200 ${
+                  className={`relative flex flex-col items-center justify-center gap-3 min-h-[160px] rounded-lg border-2 border-dashed cursor-pointer transition-all duration-200 ${
                     isDragging
                       ? "border-[var(--fg)] bg-[var(--fg)]/5 scale-[1.01]"
                       : "border-[#394739]/10 hover:border-[#394739]/30 bg-[var(--bg)]"
@@ -258,7 +258,7 @@ export default function AnalysisInput() {
                   />
                 </div>
               ) : (
-                <div className="flex items-center gap-4 p-4 rounded-xl border border-[#394739]/10 bg-[var(--bg)]">
+                <div className="flex items-center gap-4 p-4 rounded-lg border border-[#394739]/10 bg-[var(--bg)]">
                   {preview && (
                     <img
                       src={preview}
@@ -287,7 +287,7 @@ export default function AnalysisInput() {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[var(--fg)] text-[var(--bg)] text-[14px] font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                  className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#aff6b0] text-[#394739] text-[14px] font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

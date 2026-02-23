@@ -1,44 +1,37 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Fredoka';
-  src: url('/fonts/static/Fredoka-Bold.ttf') format('truetype');
+  font-family: 'Mirtha';
+  src: url('/fonts/mirthadisplaytrial-bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Fredoka';
-  src: url('/fonts/static/Fredoka-Regular.ttf') format('truetype');
+  font-family: 'Mirtha';
+  src: url('/fonts/mirthadisplaytrial-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Fredoka';
-  src: url('/fonts/static/Fredoka-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
 :root {
-  --background: #aff6b0;
-  --foreground: #394739;
-  --bg: #aff6b0;
-  --fg: #394739;
-  --accent: #2d382d; /* A slightly darker green for accents */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --accent: #aff6b0; /* Light green accent */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Fredoka', sans-serif;
+  --font-sans: 'Mirtha', sans-serif;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Mirtha', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
