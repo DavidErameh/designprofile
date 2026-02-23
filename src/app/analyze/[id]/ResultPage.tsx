@@ -37,7 +37,7 @@ export default function ResultPage({ profile }: { profile: DesignProfile }) {
           className="flex flex-col gap-12"
         >
           {/* Screenshot */}
-          <motion.div variants={fadeIn} className="overflow-hidden rounded-lg border border-[#E5E5E5] dark:border-[#333] shadow-xl">
+          <motion.div variants={fadeIn} className="overflow-hidden rounded-lg border border-[#394739]/10 shadow-xl">
              {profile.screenshot_url ? (
                <img 
                  src={profile.screenshot_url} 
@@ -45,9 +45,9 @@ export default function ResultPage({ profile }: { profile: DesignProfile }) {
                  className="w-full h-auto block"
                />
              ) : (
-               <div className="aspect-video bg-[#F5F5F5] dark:bg-[#1A1A1A] flex items-center justify-center text-[#A3A3A3] text-sm italic">
-                 No screenshot available
-               </div>
+                <div className="aspect-video bg-[#394739]/5 flex items-center justify-center text-[#394739]/40 text-sm italic">
+                  No screenshot available
+                </div>
              )}
           </motion.div>
 
@@ -56,23 +56,23 @@ export default function ResultPage({ profile }: { profile: DesignProfile }) {
             <DesignDNAChart scores={profile.meta.quality_scores!} />
             
             {profile.meta.designer_insight && (
-              <blockquote className="border-l-2 border-[#E5E5E5] dark:border-[#333] pl-6 py-1 italic text-[#737373] text-[15px] leading-relaxed">
+              <blockquote className="border-l-2 border-[#394739]/10 pl-6 py-1 italic text-[#394739]/70 text-[15px] leading-relaxed">
                 "{profile.meta.designer_insight}"
               </blockquote>
             )}
           </motion.div>
 
           {/* Basic Info (Style & Personality) */}
-          <motion.div variants={fadeIn} className="flex flex-wrap gap-8 py-8 border-y border-[#F5F5F5] dark:border-[#1A1A1A]">
+          <motion.div variants={fadeIn} className="flex flex-wrap gap-8 py-8 border-y border-[#394739]/10">
             <div className="flex flex-col gap-1">
-              <span className="text-[11px] uppercase tracking-wider text-[#A3A3A3] font-semibold">Style</span>
+              <span className="text-[11px] uppercase tracking-wider text-[#394739]/40 font-semibold">Style</span>
               <span className="text-lg font-medium">{profile.meta.design_style || "Neutral"}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[11px] uppercase tracking-wider text-[#A3A3A3] font-semibold">Personality</span>
+              <span className="text-[11px] uppercase tracking-wider text-[#394739]/40 font-semibold">Personality</span>
               <div className="flex flex-wrap gap-2">
                 {profile.meta.brand_personality?.map((p: string) => (
-                  <span key={p} className="text-sm px-2 py-0.5 rounded bg-[#F5F5F5] dark:bg-[#1A1A1A] text-[#737373]">
+                  <span key={p} className="text-sm px-2 py-0.5 rounded bg-[#394739]/5 text-[#394739]/70">
                     {p}
                   </span>
                 )) || "None detected"}

@@ -35,12 +35,12 @@ export default function FontPreview({ family, role }: FontPreviewProps) {
   }, [family]);
 
   return (
-    <div className="flex flex-col gap-3 py-4 border-b border-[#F5F5F5] dark:border-[#1A1A1A] last:border-0">
+    <div className="flex flex-col gap-3 py-4 border-b border-[#394739]/5 last:border-0">
       <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <span className="font-mono text-[11px] text-[var(--fg)] bg-[#F5F5F5] dark:bg-[#1A1A1A] px-2 py-0.5 rounded">
+        <span className="font-mono text-[11px] text-[var(--fg)] bg-[#394739]/5 px-2 py-0.5 rounded">
           {family}
         </span>
-        <span className="text-[10px] uppercase tracking-wider text-[#A3A3A3] font-semibold">
+        <span className="text-[10px] uppercase tracking-wider text-[#394739]/40 font-semibold">
           {role}
         </span>
       </div>

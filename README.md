@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DesignProfile App: Project Overview
 
-## Getting Started
+This document provides a comprehensive overview of the `designprofile-app` project based on its structure and source code.
 
-First, run the development server:
+## 🏗️ Technical Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js 15 (App Router) with React 19
+- **Database & Backend**: [Convex](https://convex.dev/)
+- **Authentication**: [Clerk](https://clerk.com/)
+- **Styling & UI**: Tailwind CSS v4, Framer Motion, Lucide React, Recharts
+- **Payments**: LemonSqueezy
+- **AI & Processing**:
+  - `@google/generative-ai` (Gemini API for design analysis)
+  - `colorthief`, `node-vibrant`, `sharp` (Color and image processing)
+  - Custom `playwright-service` (likely for headless browser screenshots/DOM extraction)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🗂️ Core Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application is structured to accept a design (via URL or image upload), process it to extract design tokens (colors, fonts, spacing, layout), and present a unified "Design Profile".
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Database Schema (Convex)
 
-## Learn More
+- `analyses`: Stores the status (`pending`, `processing`, `complete`, `error`), source (URL/image), and the final extracted `profile`.
+- `urlCache`: Caches URL analyses by `urlHash` to prevent redundant processing.
+- `users`: Tracks Clerk users, their chosen plan (`free`, `creator`, `team`), number of analyses, and LemonSqueezy subscription IDs.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Frontend Application (`src/app`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Home (`/page.tsx`)**: Displays the main landing page with an `<AnalysisInput />` to submit URLs or images.
+- **Analysis View (`/analyze/[id]`)**: The core application interface that displays the extracted design profile. It uses a tabbed layout (`PersonaTabs.tsx`):
+  - **Brand Tab (`BrandTab.tsx`)**: High-level brand colors, typography, and mood.
+  - **Web UI Tab (`WebUITab.tsx`)**: Specific UI components, buttons, and interaction colors.
+  - **Developer Tab (`DeveloperTab.tsx`)**: Extracted CSS variables, spacing scales, and ready-to-use code snippets.
+  - **Graphic Tab (`GraphicTab.tsx`)**: Image-heavy breakdown.
+- **Library (`/library`)**: Likely displays previously saved analyses for the user.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Analysis Engine (`lib/analysis`)
 
-## Deploy on Vercel
+The heavy lifting occurs in the `lib/analysis` module:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `gemini.ts`: Interfaces with Google's Gemini to semantically analyze screenshots and extract structure.
+- `colors.ts` & `css.ts`: Extracts raw color palettes, dominant colors, and CSS variables.
+- `assembler.ts`: Combines the raw outputs from Playwright, Gemini, and image processing into a single, cohesive `profile` object.
+- `exports.ts`: Handles exporting the analysis (e.g., to PDF or CSS files).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔄 The User Flow
+
+1. **Input**: User pastes a URL or uploads an image on the home page.
+2. **Processing**:
+   - A new analysis record is created in Convex.
+   - For a URL, the `playwright-service` fetches the page, captures a screenshot, and extracts raw CSS.
+   - Image APIs (`sharp`, `node-vibrant`) analyze colors.
+   - Gemini interprets the visual structure and typography.
+3. **Assembly**: The `assembler.ts` unifies these data points.
+4. **Result**: The user is redirected to `/analyze/[id]`, which loads the data from Convex and renders the multi-tabbed interactive report, complete with charts (`DesignDNAChart.tsx`, `ColorRatioPie.tsx`).

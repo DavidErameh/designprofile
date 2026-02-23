@@ -13,7 +13,7 @@ export default function Home() {
             Decode any design.
           </h1>
           <p className="text-lg text-[#A3A3A3]">
-            Instantly extract colors, fonts, spacing, and CSS variables from any website.
+            Extract colors, fonts, spacing, and CSS variables from any website or screenshot.
           </p>
         </div>
 

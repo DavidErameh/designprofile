@@ -19,7 +19,7 @@ export default function PersonaTabs({ profile }: { profile: DesignProfile }) {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex items-center gap-6 border-b border-[#E5E5E5] dark:border-[#333] mb-8">
+      <div className="flex items-center gap-6 border-b border-[#394739]/10 mb-8">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -27,12 +27,12 @@ export default function PersonaTabs({ profile }: { profile: DesignProfile }) {
             className={`pb-3 text-sm font-medium transition-colors relative ${
               activeTab === tab.id 
                 ? "text-[var(--fg)]" 
-                : "text-[#A3A3A3] hover:text-[#737373]"
+                : "text-[#394739]/40 hover:text-[#394739]"
             }`}
           >
             {tab.label}
             {activeTab === tab.id && (
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0066FF]" />
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--fg)]" />
             )}
           </button>
         ))}

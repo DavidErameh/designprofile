@@ -29,12 +29,12 @@ function AnalysisRow({ analysis }: { analysis: any }) {
   return (
     <Link 
       href={`/analyze/${analysis._id}`}
-      className="flex items-center justify-between h-[48px] border-b border-[#E5E5E5] dark:border-[#333] group"
+      className="flex items-center justify-between h-[48px] border-b border-[#394739]/10 group"
     >
       <span className="text-[14px] font-medium text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors truncate pr-4">
         {analysis.sourceValue}
       </span>
-      <span className="text-[12px] text-[#737373] font-mono whitespace-nowrap capitalize">
+      <span className="text-[12px] text-[#394739]/50 font-mono whitespace-nowrap capitalize">
         {style} &middot; {formatRelativeTime(analysis.createdAt)}
       </span>
     </Link>
@@ -48,9 +48,9 @@ function LibraryContent() {
     return (
       <div className="flex flex-col">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center justify-between h-[48px] border-b border-[#E5E5E5] dark:border-[#333]">
-            <div className="h-4 w-48 bg-[#F5F5F5] dark:bg-[#1A1A1A] rounded animate-pulse" />
-            <div className="h-3 w-32 bg-[#F5F5F5] dark:bg-[#1A1A1A] rounded animate-pulse" />
+          <div key={i} className="flex items-center justify-between h-[48px] border-b border-[#394739]/10">
+            <div className="h-4 w-48 bg-[#394739]/5 rounded animate-pulse" />
+            <div className="h-3 w-32 bg-[#394739]/5 rounded animate-pulse" />
           </div>
         ))}
       </div>
@@ -59,7 +59,7 @@ function LibraryContent() {
 
   if (analyses.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-[#A3A3A3]">
+      <div className="flex flex-col items-center justify-center py-24 text-[#394739]/40">
         <p className="mb-4">No analyses yet.</p>
         <Link href="/" className="text-[var(--accent)] hover:underline text-sm font-medium">
           Analyze your first URL &rarr;

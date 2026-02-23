@@ -1,6 +1,8 @@
-import { internalAction } from "./_generated/server";
+"use node";
+
+import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
-import { internal } from "./_generated/api";
+import { internal } from "../_generated/api";
 
 // Analysis logic functions
 import { analyzeColors } from "../lib/analysis/colors";

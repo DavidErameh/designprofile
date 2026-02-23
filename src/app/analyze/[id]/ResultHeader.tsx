@@ -19,7 +19,7 @@ export default function ResultHeader({
   };
 
   return (
-    <header className="flex items-center justify-between py-3 mb-8 border-b border-[#E5E5E5] dark:border-[#333] text-[13px] text-[#737373]">
+    <header className="flex items-center justify-between py-3 mb-8 border-b border-[#394739]/10 text-[13px] text-[#394739]/70">
       <div className="flex items-center gap-4 truncate">
         <span className="font-mono truncate">{sourceValue}</span>
         <span className="shrink-0 opacity-50">&middot;</span>

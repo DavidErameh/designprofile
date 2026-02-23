@@ -7,6 +7,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import Nav from "@/components/Nav";
 import LoadingState from "./LoadingState";
 import ErrorState from "./ErrorState";
+import ResultPage from "./ResultPage";
 
 export default function AnalyzePage() {
   const params = useParams();

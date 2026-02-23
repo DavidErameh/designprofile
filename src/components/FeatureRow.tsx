@@ -12,7 +12,7 @@ export default function FeatureRow() {
       {features.map((feature) => (
         <span
           key={feature}
-          className="text-[13px] text-[#A3A3A3] font-medium whitespace-nowrap"
+          className="text-[13px] text-[#394739]/50 font-medium whitespace-nowrap"
         >
           {feature}
         </span>
