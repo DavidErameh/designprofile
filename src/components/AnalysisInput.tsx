@@ -10,15 +10,20 @@ import { Monitor, ImageIcon, Upload, X, ArrowRight, Loader2 } from "lucide-react
 
 type Mode = "web" | "image";
 
+import { useDesignAnalysis } from "@/hooks/useDesignAnalysis";
+
 export default function AnalysisInput() {
   const [mode, setMode] = useState<Mode>("web");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { loading: apiLoading, stage, analyzeImage, analyzeWeb } = useDesignAnalysis();
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const loading = apiLoading || submitLoading;
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createAnalysis = useMutation(api.analyses.createAnalysis);
   const router = useRouter();
@@ -26,65 +31,46 @@ export default function AnalysisInput() {
 
   const examples = ["lemonsqueezy.com", "linear.app", "notion.so"];
 
-  // ── Mode Switching ──────────────────────────────────────────────────
-
-  const switchMode = (newMode: Mode) => {
-    if (newMode === mode) return;
-    setMode(newMode);
-    setError(null);
-    if (newMode === "web") {
-      setFile(null);
-      setPreview(null);
-    } else {
-      setUrl("");
-    }
-  };
-
   // ── File Handling ───────────────────────────────────────────────────
 
-  const handleFile = useCallback((f: File) => {
+  const handleFile = (f: File) => {
     if (!f.type.startsWith("image/")) {
-      setError("Please upload an image file (PNG, JPG, etc.)");
-      return;
-    }
-    if (f.size > 10 * 1024 * 1024) {
-      setError("File must be under 10 MB");
+      setError("Please upload an image file.");
       return;
     }
     setFile(f);
-    setError(null);
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
     reader.readAsDataURL(f);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-      const dropped = e.dataTransfer.files[0];
-      if (dropped) handleFile(dropped);
-    },
-    [handleFile]
-  );
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
+    setError(null);
   };
 
-  const handleDragLeave = () => setIsDragging(false);
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const f = e.dataTransfer.files?.[0];
+    if (f) handleFile(f);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
 
   const removeFile = () => {
     setFile(null);
     setPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // ── Submit ──────────────────────────────────────────────────────────
 
   const handleSubmit = async () => {
-    setLoading(true);
+    setSubmitLoading(true);
     setError(null);
     try {
       if (mode === "web") {
@@ -93,23 +79,40 @@ export default function AnalysisInput() {
         if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
           finalUrl = "https://" + finalUrl;
         }
+        
+        // 1. Create record in Convex (without orchestrate field)
         const id = await createAnalysis({
           sourceType: "url",
           sourceValue: finalUrl,
         });
+        
+        // 2. Start the redirect to the analyze page immediately 
+        // OR wait for the API call to finish? 
+        // The current app redirects and shows a loading state. 
+        // Let's stick to that but trigger the API call in the background or right here.
         router.push(`/analyze/${id}`);
+        
+        // 3. Trigger API (it will update Convex status)
+        analyzeWeb(finalUrl, id).catch(console.error);
+        
       } else {
         if (!file || !preview) return;
-        // For image mode: pass the base64 data as sourceValue
+        
+        // 1. Create record in Convex
         const id = await createAnalysis({
           sourceType: "image",
-          sourceValue: preview,
+          sourceValue: "Uploaded Image",
         });
+        
         router.push(`/analyze/${id}`);
+        
+        // 2. Trigger API
+        analyzeImage(file, id).catch(console.error);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to create analysis");
-      setLoading(false);
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -136,7 +139,7 @@ export default function AnalysisInput() {
           }}
         />
         <button
-          onClick={() => switchMode("web")}
+          onClick={() => setMode("web")}
           className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-md transition-colors duration-200 ${
             mode === "web" ? "text-[var(--fg)]" : "text-[#394739]/50 hover:text-[#394739]"
           }`}
@@ -145,7 +148,7 @@ export default function AnalysisInput() {
           Web
         </button>
         <button
-          onClick={() => switchMode("image")}
+          onClick={() => setMode("image")}
           className={`relative z-10 flex items-center gap-1.5 px-5 py-1.5 text-[13px] font-medium rounded-md transition-colors duration-200 ${
             mode === "image" ? "text-[var(--fg)]" : "text-[#394739]/50 hover:text-[#394739]"
           }`}
@@ -186,10 +189,13 @@ export default function AnalysisInput() {
                 <button
                   type="submit"
                   disabled={loading || !url.trim()}
-                  className="absolute right-2 p-2 rounded-md bg-[#aff6b0] text-[#394739] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center h-10 w-10"
+                  className="absolute right-2 p-2 rounded-md bg-[#aff6b0] text-[#394739] disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center h-10 w-10 min-w-[40px]"
                 >
                   {loading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <div className="flex items-center gap-2">
+                       <Loader2 className="w-5 h-5 animate-spin" />
+                       {stage && <span className="text-[10px] absolute -bottom-6 right-0 whitespace-nowrap text-[#394739]/60">{stage}</span>}
+                    </div>
                   ) : (
                     <ArrowRight className="w-5 h-5" />
                   )}
@@ -287,15 +293,22 @@ export default function AnalysisInput() {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-[#aff6b0] text-[#394739] text-[14px] font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                  className="flex flex-col items-center justify-center gap-1 w-full py-3 rounded-lg bg-[#aff6b0] text-[#394739] text-[14px] font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
                 >
-                  {loading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <>
-                      Analyze Screenshot
-                      <ArrowRight className="w-4 h-4" />
-                    </>
+                  <div className="flex items-center gap-2">
+                    {loading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <>
+                        Analyze Screenshot
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </div>
+                  {loading && stage && (
+                    <span className="text-[11px] font-medium opacity-60 animate-pulse">
+                      {stage}
+                    </span>
                   )}
                 </button>
               )}

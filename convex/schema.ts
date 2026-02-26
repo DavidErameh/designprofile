@@ -12,6 +12,7 @@ export default defineSchema({
       v.literal("complete"),
       v.literal("error"),
     ),
+    stage: v.optional(v.string()),
     screenshotUrl: v.optional(v.string()),
     profile: v.optional(v.any()),
     errorMessage: v.optional(v.string()),

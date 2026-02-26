@@ -40,7 +40,7 @@ export default function AnalyzePage() {
     );
   }
 
-  const { status, sourceValue, errorMessage } = analysis;
+  const { status, sourceValue, errorMessage, stage } = analysis;
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)]">
@@ -48,7 +48,7 @@ export default function AnalyzePage() {
       
       <main className="pt-14">
         {(status === "pending" || status === "processing") && (
-          <LoadingState sourceValue={sourceValue} />
+          <LoadingState sourceValue={sourceValue} stage={stage} />
         )}
 
         {status === "error" && (

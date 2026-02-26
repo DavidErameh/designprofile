@@ -7,6 +7,7 @@ export const createAnalysis = mutation({
   args: {
     sourceType: v.union(v.literal("url"), v.literal("image")),
     sourceValue: v.string(),
+    orchestrate: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -27,11 +28,6 @@ export const createAnalysis = mutation({
       createdAt: Date.now(),
     });
     
-    // Trigger orchestrator action
-    await ctx.scheduler.runAfter(0, internal.actions.runAnalysis.runAnalysis, {
-      analysisId: id,
-    });
-    
     return id;
   },
 });
@@ -48,6 +44,16 @@ export const setStatus = internalMutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, { status: args.status });
+  },
+});
+
+export const setStage = internalMutation({
+  args: {
+    id: v.id("analyses"),
+    stage: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { stage: args.stage });
   },
 });
 

@@ -2,17 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-export default function LoadingState({ sourceValue }: { sourceValue: string }) {
-  const [step, setStep] = useState(0);
+export default function LoadingState({ 
+  sourceValue, 
+  stage 
+}: { 
+  sourceValue: string;
+  stage?: string;
+}) {
+  const [history, setHistory] = useState<string[]>([]);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setStep(1), 1500);
-    const timer2 = setTimeout(() => setStep(2), 3000);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, []);
+    if (stage && !history.includes(stage)) {
+      setHistory(prev => [...prev, stage]);
+    }
+  }, [stage]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-6">
@@ -23,18 +26,18 @@ export default function LoadingState({ sourceValue }: { sourceValue: string }) {
 
       <div className="w-full max-w-[400px] flex flex-col gap-2 font-mono text-[13px] text-[#737373]">
         <p className="animate-in fade-in slide-in-from-left-2 duration-500">
-          &rarr; Loading {sourceValue}
+          &rarr; Initializing analysis for {sourceValue}
         </p>
         
-        {step >= 1 && (
-          <p className="animate-in fade-in slide-in-from-left-2 duration-500">
-            &rarr; Extracting CSS from elements
+        {history.map((h, i) => (
+          <p key={i} className="animate-in fade-in slide-in-from-left-2 duration-500">
+            &rarr; {h}
           </p>
-        )}
-        
-        {step >= 2 && (
-          <p className="animate-in fade-in slide-in-from-left-2 duration-500">
-            &rarr; Running AI analysis
+        ))}
+
+        {!stage && (
+          <p className="animate-in fade-in slide-in-from-left-2 duration-500 opacity-50 italic">
+            &rarr; Waiting for server...
           </p>
         )}
       </div>

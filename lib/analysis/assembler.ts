@@ -1,6 +1,25 @@
 import { randomUUID } from "crypto";
 import type { DesignProfile } from "../types/profile";
-import type { GeminiAnalysisResult } from "./gemini";
+
+// ── Shared AI Result Interface ───────────────────────────────────────
+
+export interface AIAnalysisResult {
+  design_style: string | null;
+  brand_personality: string[] | null;
+  visual_weight: "light" | "medium" | "heavy" | null;
+  layout_pattern: string | null;
+  whitespace_usage: "generous" | "moderate" | "tight" | null;
+  quality_scores: {
+    consistency: number;
+    hierarchy: number;
+    whitespace: number;
+    typography: number;
+    color_harmony: number;
+  } | null;
+  designer_insight: string | null;
+  components: string[] | null;
+  fonts_detected?: Array<{ name: string; role: "heading" | "body" | "accent"; confidence: number }> | null;
+}
 
 // ── Input Types ──────────────────────────────────────────────────────
 
@@ -35,7 +54,7 @@ interface CSSProfile {
 export interface AssemblerInputs {
   colorProfile: ColorProfile;
   cssData?: CSSProfile;
-  geminiData: GeminiAnalysisResult;
+  aiData: AIAnalysisResult; // Renamed from geminiData
   sourceType: "url" | "image";
   sourceValue: string;
   processingMs: number;
@@ -82,13 +101,13 @@ const DEFAULT_EFFECTS = {
 // ── Main Function ────────────────────────────────────────────────────
 
 export function buildProfile(inputs: AssemblerInputs): DesignProfile {
-  const { colorProfile, cssData, geminiData, sourceType, sourceValue, processingMs } =
+  const { colorProfile, cssData, aiData, sourceType, sourceValue, processingMs } =
     inputs;
 
-  // Typography: URL path uses cssData, image path uses Gemini-detected fonts
+  // Typography: URL path uses cssData, image path uses AI-detected fonts
   let fonts = cssData?.typography.fonts ?? DEFAULT_TYPOGRAPHY.fonts;
-  if (sourceType === "image" && geminiData.fonts_detected) {
-    fonts = geminiData.fonts_detected.map((f) => ({
+  if (sourceType === "image" && aiData.fonts_detected) {
+    fonts = aiData.fonts_detected.map((f) => ({
       family: f.name,
       role: f.role,
       fallback: "sans-serif",
@@ -106,15 +125,16 @@ export function buildProfile(inputs: AssemblerInputs): DesignProfile {
     source_value: sourceValue,
     analyzed_at: new Date().toISOString(),
     processing_ms: processingMs,
+    screenshot_url: inputs.screenshotUrl, // Ensure this is passed through
 
     meta: {
-      design_style: geminiData.design_style,
-      brand_personality: geminiData.brand_personality,
-      visual_weight: geminiData.visual_weight,
-      layout_pattern: geminiData.layout_pattern,
-      whitespace_usage: geminiData.whitespace_usage,
-      quality_scores: geminiData.quality_scores,
-      designer_insight: geminiData.designer_insight,
+      design_style: aiData.design_style,
+      brand_personality: aiData.brand_personality,
+      visual_weight: aiData.visual_weight,
+      layout_pattern: aiData.layout_pattern,
+      whitespace_usage: aiData.whitespace_usage,
+      quality_scores: aiData.quality_scores,
+      designer_insight: aiData.designer_insight,
     },
 
     colors: {
@@ -133,6 +153,6 @@ export function buildProfile(inputs: AssemblerInputs): DesignProfile {
     spacing,
     effects,
 
-    components: geminiData.components ?? [],
+    components: aiData.components ?? [],
   };
 }

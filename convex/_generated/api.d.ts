@@ -8,7 +8,6 @@
  * @module
  */
 
-import type * as actions_runAnalysis from "../actions/runAnalysis.js";
 import type * as analyses from "../analyses.js";
 import type * as lib_analysis_assembler from "../lib/analysis/assembler.js";
 import type * as lib_analysis_colors from "../lib/analysis/colors.js";
@@ -27,7 +26,6 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  "actions/runAnalysis": typeof actions_runAnalysis;
   analyses: typeof analyses;
   "lib/analysis/assembler": typeof lib_analysis_assembler;
   "lib/analysis/colors": typeof lib_analysis_colors;
