@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { analyzeColors } from "./colors";
 import sharp from "sharp";
 

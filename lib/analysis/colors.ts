@@ -1,4 +1,4 @@
-import Vibrant from "node-vibrant";
+import { Vibrant } from 'node-vibrant/node';
 import sharp from "sharp";
 
 // ── Hex/RGB Helpers ──────────────────────────────────────────────────

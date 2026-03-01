@@ -3,7 +3,7 @@ import { normalizeCSSData, RawCSSData } from "./css";
 const mockCSSData: RawCSSData = {
   fonts: {
     Inter: 500000,
-    "JetBrains Mono": 30000,
+    "JetBrains Mono": 60000,
     Georgia: 5000,
   },
   colors: {
