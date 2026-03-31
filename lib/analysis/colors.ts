@@ -1,4 +1,4 @@
-import Vibrant from "node-vibrant";
+import { Vibrant } from "node-vibrant/node";
 import sharp from "sharp";
 
 // ── Hex/RGB Helpers ──────────────────────────────────────────────────
@@ -52,10 +52,10 @@ interface PaletteEntry {
 }
 
 interface WcagPair {
-  foreground: string;
-  background: string;
+  fg: string;
+  bg: string;
   ratio: number;
-  level: "AA" | "AAA";
+  score: string;
 }
 
 interface ColorRatios {
@@ -208,10 +208,10 @@ export async function analyzeColors(
       const ratio = getContrastRatio(semanticHexes[i], semanticHexes[j]);
       if (ratio >= 4.5) {
         wcag_pairs.push({
-          foreground: semanticHexes[i],
-          background: semanticHexes[j],
+          fg: semanticHexes[i],
+          bg: semanticHexes[j],
           ratio: Math.round(ratio * 100) / 100,
-          level: ratio >= 7.0 ? "AAA" : "AA",
+          score: ratio >= 7.0 ? "AAA" : ratio >= 4.5 ? "AA" : "Fail",
         });
       }
     }

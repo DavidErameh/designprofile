@@ -60,7 +60,7 @@ export default function WebUITab({ profile }: { profile: DesignProfile }) {
       </section>
 
       <section>
-        <ComponentChips components={profile.components?.detected || []} />
+        <ComponentChips components={profile.components || []} />
       </section>
     </div>
   );

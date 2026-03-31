@@ -70,10 +70,10 @@ export interface ColorRatios {
 }
 
 export interface WcagPair {
-  foreground: string;
-  background: string;
+  fg: string;
+  bg: string;
   ratio: number;
-  level: "AA" | "AAA";
+  score: string;
 }
 
 export interface FontEntry {

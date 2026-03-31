@@ -1,13 +1,13 @@
 "use client";
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { ColorProfile } from "../../../../../lib/types/profile";
+import { DesignProfile } from "../../../../../lib/types/profile";
 
-export default function ColorRatioPie({ ratios }: { ratios: ColorProfile["ratios"] }) {
+export default function ColorRatioPie({ ratios }: { ratios: DesignProfile["colors"]["ratios"] }) {
   const data = [
     { name: "Background", value: ratios.background },
     { name: "Text", value: ratios.text },
-    { name: "Primary/Accent", value: ratios.primary },
+    { name: "Accent", value: ratios.accent },
     { name: "Interactive", value: ratios.interactive },
   ].filter((d) => d.value > 0);
 
@@ -36,7 +36,7 @@ export default function ColorRatioPie({ ratios }: { ratios: ColorProfile["ratios
             <Tooltip 
               contentStyle={{ backgroundColor: "#0A0A0A", border: "1px solid #333", borderRadius: "8px", fontSize: "12px", color: "#F5F5F5" }}
               itemStyle={{ color: "#F5F5F5" }}
-              formatter={(value: number) => [`${Math.round(value * 100)}%`, ""]}
+              formatter={(value) => [`${Math.round((value as number) * 100)}%`, ""]}
             />
           </PieChart>
         </ResponsiveContainer>

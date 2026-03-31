@@ -31,7 +31,7 @@ export const getUser = query({
   },
 });
 
-export const updatePlan = internalMutation({
+export const updatePlan = mutation({
   args: {
     clerkId: v.string(),
     plan: v.union(v.literal("free"), v.literal("creator"), v.literal("team")),

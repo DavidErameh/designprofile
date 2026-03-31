@@ -5,7 +5,7 @@ export default function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 h-14 border-b border-[#394739]/10 flex items-center justify-between px-6 z-50 bg-[var(--bg)]">
       <div className="flex items-center gap-6">
-        <Link href="/" className="font-bold tracking-tight text-[var(--fg)] text-lg flex items-center gap-2">
+        <Link href="/" className="font-bold tracking-wide text-[var(--fg)] text-xl flex items-center gap-2">
           <img src="/LOGO/DP_ICON.svg" alt="DesignProfiler Logo" className="w-8 h-8" />
           DesignProfiler
         </Link>

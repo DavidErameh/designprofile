@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { ConvexReactClient, useMutation } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { useAuth } from "@clerk/nextjs";
-import { api } from "../../convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 
 const convex = new ConvexReactClient(
   process.env.NEXT_PUBLIC_CONVEX_URL || "https://example.convex.cloud"

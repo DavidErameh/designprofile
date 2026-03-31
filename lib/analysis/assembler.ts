@@ -8,10 +8,10 @@ interface ColorProfile {
   palette: Array<{ hex: string; role: string; usage_percent: number }>;
   ratios: { background: number; text: number; accent: number; interactive: number };
   wcag_pairs: Array<{
-    foreground: string;
-    background: string;
+    fg: string;
+    bg: string;
     ratio: number;
-    level: "AA" | "AAA";
+    score: string;
   }>;
 }
 

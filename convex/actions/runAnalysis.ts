@@ -1,8 +1,6 @@
-"use node";
-
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
-import { internal } from "../_generated/api";
+import { internal, api } from "../_generated/api";
 
 // Analysis logic functions
 import { analyzeColors } from "../lib/analysis/colors";
@@ -32,7 +30,7 @@ export const runAnalysis = internalAction({
       });
 
       // 2. Fetch analysis document
-      const analysis = await ctx.runQuery(internal.analyses.getAnalysis, { id: analysisId });
+      const analysis = await ctx.runQuery(api.analyses.getAnalysis, { id: analysisId });
       if (!analysis) throw new Error("Analysis not found");
 
       let finalProfile: any = null;
@@ -44,7 +42,7 @@ export const runAnalysis = internalAction({
         const urlHash = await sha256(analysis.sourceValue);
 
         // b. Check urlCache
-        const cachedProfile = await ctx.runQuery(internal.urlCache.getCache, { urlHash });
+        const cachedProfile = await ctx.runQuery(api.urlCache.getCache, { urlHash });
 
         // c. If cache hit
         if (cachedProfile) {
@@ -101,7 +99,7 @@ export const runAnalysis = internalAction({
         finalProfile.exports = generateExports(finalProfile);
 
         // Set cache for URL
-        await ctx.runMutation(internal.urlCache.setCache, {
+        await ctx.runMutation(api.urlCache.setCache, {
           urlHash,
           profile: finalProfile,
         });

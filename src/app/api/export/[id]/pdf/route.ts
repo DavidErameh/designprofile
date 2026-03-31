@@ -1,12 +1,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { fetchQuery } from "convex/nextjs";
-import { api } from "../../../../../../../convex/_generated/api";
-import { generatePDFBuffer } from "../../../../../../../lib/export/generatePDF";
+import { api } from "@/convex/_generated/api";
+import { generatePDFBuffer } from "@/lib/export/generatePDF";
+import { Id } from "@/convex/_generated/dataModel";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -14,9 +15,9 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
 
-    const analysis = await fetchQuery(api.analyses.getAnalysis, { id: id as any });
+    const analysis = await fetchQuery(api.analyses.getAnalysis, { id: id as Id<"analyses"> });
 
     if (!analysis) {
       return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
@@ -43,7 +44,7 @@ export async function GET(
 
     const slug = analysis.sourceValue.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
-    return new Response(pdfBuffer, {
+    return new Response(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

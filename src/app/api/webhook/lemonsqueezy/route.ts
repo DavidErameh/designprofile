@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { fetchMutation } from "convex/nextjs";
-import { api, internal } from "../../../../convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
     const body = await req.text();
-    const signature = headers().get("X-Signature") || "";
+    const headersList = await headers();
+    const signature = headersList.get("X-Signature") || "";
     const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || "";
 
     const hmac = crypto.createHmac("sha256", secret);
@@ -40,7 +41,7 @@ export async function POST(req: Request) {
       const customerId = obj.customer_id.toString();
       const orderId = payload.data.id.toString();
 
-      await fetchMutation(internal.users.updatePlan, {
+      await fetchMutation(api.users.updatePlan, {
         clerkId: clerkUserId,
         plan,
         lemonsqueezyCustomerId: customerId,

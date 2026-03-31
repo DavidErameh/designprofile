@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, renderToStream } from '@react-pdf/renderer';
-import { DesignProfile } from '../../types/profile';
+import { DesignProfile } from '../types/profile';
 import { generateExports } from '../analysis/exports';
 
 const styles = StyleSheet.create({
@@ -32,20 +32,24 @@ const ReportPDF = ({ profile }: { profile: DesignProfile }) => {
         
         <Text style={styles.sectionTitle}>Design DNA Scores</Text>
         <View style={styles.row}>
-          <Text style={styles.label}>Visual Hierarchy:</Text>
-          <Text style={styles.value}>{profile.meta.quality_scores?.visual_hierarchy ?? 0}%</Text>
+          <Text style={styles.label}>Hierarchy:</Text>
+          <Text style={styles.value}>{profile.meta.quality_scores?.hierarchy ?? 0}%</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Accessibility:</Text>
-          <Text style={styles.value}>{profile.meta.quality_scores?.accessibility ?? 0}%</Text>
+          <Text style={styles.label}>Consistency:</Text>
+          <Text style={styles.value}>{profile.meta.quality_scores?.consistency ?? 0}%</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Brand Consistency:</Text>
-          <Text style={styles.value}>{profile.meta.quality_scores?.brand_consistency ?? 0}%</Text>
+          <Text style={styles.label}>Whitespace:</Text>
+          <Text style={styles.value}>{profile.meta.quality_scores?.whitespace ?? 0}%</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Modernity:</Text>
-          <Text style={styles.value}>{profile.meta.quality_scores?.modernity ?? 0}%</Text>
+          <Text style={styles.label}>Typography:</Text>
+          <Text style={styles.value}>{profile.meta.quality_scores?.typography ?? 0}%</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Color Harmony:</Text>
+          <Text style={styles.value}>{profile.meta.quality_scores?.color_harmony ?? 0}%</Text>
         </View>
       </Page>
       

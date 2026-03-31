@@ -48,7 +48,7 @@ export default function GraphicTab({ profile }: { profile: DesignProfile }) {
             <ColorSwatch
               key={`${color.hex}-${i}`}
               hex={color.hex}
-              usage={color.usage_ratio}
+              usage={color.usage_percent}
               role={color.role}
             />
           ))}
@@ -61,7 +61,7 @@ export default function GraphicTab({ profile }: { profile: DesignProfile }) {
           WCAG Contrast Pairs
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {profile.colors.contrast_ratios.map((pair, i) => (
+          {profile.colors.wcag_pairs.map((pair, i) => (
             <div
               key={`${pair.fg}-${pair.bg}-${i}`}
               className="flex items-center gap-3 p-3 rounded-lg bg-[#394739]/5"
@@ -89,7 +89,7 @@ export default function GraphicTab({ profile }: { profile: DesignProfile }) {
               </div>
             </div>
           ))}
-          {profile.colors.contrast_ratios.length === 0 && (
+          {profile.colors.wcag_pairs.length === 0 && (
             <div className="text-sm text-[#394739]/40 italic">No contrast pairs analyzed.</div>
           )}
         </div>
