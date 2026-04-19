@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="antialiased font-sans">
+        <body className="antialiased font-sans bg-[#fafafa]">
           <ConvexClientProvider>
             {children}
           </ConvexClientProvider>

@@ -83,8 +83,8 @@ export default function GraphicTab({ profile }: { profile: DesignProfile }) {
                 <span className="text-[#394739]/40 mx-1">&mdash;</span>
                 <span className="text-[#394739]/70">ratio:{pair.ratio.toFixed(2)}</span>
                 <span className="text-[#394739]/40 mx-1">&mdash;</span>
-                <span className={`font-semibold ${pair.score.includes("Fail") ? "text-red-500" : "text-[#394739]"}`}>
-                  {pair.score}
+                <span className={`font-semibold ${pair.score?.includes("Fail") ? "text-red-500" : "text-[#394739]"}`}>
+                  {pair.score ?? "N/A"}
                 </span>
               </div>
             </div>

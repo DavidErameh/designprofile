@@ -53,7 +53,7 @@ export default function ResultPage({ profile }: { profile: DesignProfile }) {
 
           {/* DNA Section */}
           <motion.div variants={fadeIn} className="flex flex-col gap-6">
-            <DesignDNAChart scores={profile.meta.quality_scores!} />
+            <DesignDNAChart scores={profile.meta?.quality_scores ?? null} />
             
             {profile.meta.designer_insight && (
               <blockquote className="border-l-2 border-[#394739]/10 pl-6 py-1 italic text-[#394739]/70 text-[15px] leading-relaxed">

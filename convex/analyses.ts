@@ -12,13 +12,20 @@ export const createAnalysis = mutation({
     // Temp: Allow unauthenticated for testing
     const userId = "anonymous";
     
-    const id = await ctx.db.insert("analyses", {
+    const insertData: any = {
       userId,
       sourceType: args.sourceType,
       sourceValue: args.sourceValue,
       status: "pending",
       createdAt: Date.now(),
-    });
+    };
+    
+    // For images, save the base64 data URL as screenshotUrl
+    if (args.sourceType === "image") {
+      insertData.screenshotUrl = args.sourceValue;
+    }
+    
+    const id = await ctx.db.insert("analyses", insertData);
     
     // Trigger orchestrator action
     await ctx.scheduler.runAfter(0, internal.actions.runAnalysis.runAnalysis, {

@@ -2,8 +2,8 @@
 
 import { useQuery } from "convex/react";
 import { useParams } from "next/navigation";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import Nav from "@/components/Nav";
 import LoadingState from "./LoadingState";
 import ErrorState from "./ErrorState";

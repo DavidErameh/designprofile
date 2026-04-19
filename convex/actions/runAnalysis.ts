@@ -1,3 +1,5 @@
+"use node";
+
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
 import { internal, api } from "../_generated/api";
@@ -106,14 +108,10 @@ export const runAnalysis = internalAction({
 
       } else {
         // ── Image Path ────────────────────────────────────────────────
-        const screenshotUrl = analysis.screenshotUrl;
-        if (!screenshotUrl) throw new Error("Image analysis missing screenshotUrl");
-
-        // Fetch the image to get base64
-        const imgRes = await fetch(screenshotUrl);
-        if (!imgRes.ok) throw new Error("Failed to fetch image from storage");
-        const arrayBuffer = await imgRes.arrayBuffer();
-        const screenshotBase64 = Buffer.from(arrayBuffer).toString("base64");
+        // For images, the base64 data is in sourceValue (stored as screenshotUrl on creation)
+        const screenshotBase64 = analysis.sourceValue;
+        
+        if (!screenshotBase64) throw new Error("Image analysis missing screenshot data");
 
         // Perform analysis pipeline
         const colorProfile = await analyzeColors(screenshotBase64);

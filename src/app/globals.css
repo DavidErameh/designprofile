@@ -15,11 +15,11 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #1a1a1a;
-  --bg: #ffffff;
+  --bg: #fafafa;
   --fg: #1a1a1a;
-  --accent: #aff6b0; /* Light green accent */
+  --accent: #aff6b0;
 }
 
 @theme inline {
@@ -29,11 +29,14 @@
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, #000 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
   color: var(--fg);
   font-family: 'Mirtha', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 * {

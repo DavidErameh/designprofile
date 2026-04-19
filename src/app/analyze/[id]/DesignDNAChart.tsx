@@ -3,7 +3,16 @@
 import RadarChart from "@/components/RadarChart";
 import { QualityScores } from "../../../../lib/types/profile";
 
-export default function DesignDNAChart({ scores }: { scores: QualityScores }) {
+export default function DesignDNAChart({ scores }: { scores: QualityScores | null | undefined }) {
+  if (!scores) {
+    return (
+      <div className="flex flex-col items-center py-6">
+        <h3 className="text-xs font-semibold uppercase tracking-widest text-[#A3A3A3] mb-4">Design DNA</h3>
+        <p className="text-sm text-[#737373]">Analysis in progress...</p>
+      </div>
+    );
+  }
+
   const data = [
     { axis: "Consistency", value: scores.consistency },
     { axis: "Hierarchy", value: scores.hierarchy },
